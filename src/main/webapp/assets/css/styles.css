@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; margin: 24px; }
+header h1 { margin-bottom: 6px; }
+nav a { margin-right: 12px; }
+main { margin-top: 24px; }
+.hint { color: #555; font-size: 0.9rem; }

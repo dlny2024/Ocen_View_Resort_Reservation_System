@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login – Ocean View Resort</title>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<main>
+  <h2>Login</h2>
+  <form id="loginForm" onsubmit="return false;">
+    <label>Username <input type="text" id="username" required></label>
+    <label>Password <input type="password" id="password" required></label>
+    <button type="submit">Login</button>
+  </form>
+  <p class="hint">v1.0: UI only. Backend auth will come in v1.1.</p>
+</main>
+<script>
+document.getElementById('loginForm').addEventListener('submit', () => {
+  alert('For v1.0 this is a static UI. Backend in v1.1.');
+});
+</script>
+</body>
+</html>
