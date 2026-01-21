@@ -1,6 +1,5 @@
 
-# Ocean View Resort – Online Room Reservation System  
-**Version:** v1.0 (Milestone 1)  
+# Ocean View Resort – Online Room Reservation System   
 **Module:** CIS6003 – Advanced Programming  
 **Student:** Dilini Subodha Fernando 
 **GIT:** https://github.com/dlny2024/Ocen_View_Resort_Reservation_System
@@ -72,57 +71,50 @@ MySQL database accessed via:
 
 ---
 
-## 5. Folder Structure (v1.0)
 Ocen_View_Resort_Reservation_System/
-├── src/
-│   ├── main/java/com/oceanview/ovrs/
-│   │   ├── controllers/
-│   │   │   └── HealthCheckServlet.java
-│   │   └── util/
-│   │       └── DBConnection.java
-│   └── main/webapp/
-│       ├── index.html
-│       ├── login.html
-│       ├── help.html
-│       ├── assets/css/styles.css
-│       ├── assets/js/app.js
-│       └── WEB-INF/web.xml
-│
-├── docs/sql/schema_v1_0.sql
-├── pom.xml
-└── README.md
+├─ src/
+│  ├─ main/java/com/oceanview/ovrs/
+│  │  ├─ controllers/
+│  │  │  ├─ HealthCheckServlet.java
+│  │  │  └─ LoginServlet.java           # (v1.1)
+│  │  ├─ dao/
+│  │  │  └─ UserDAO.java                # (v1.1)
+│  │  └─ util/
+│  │     └─ DBConnection.java
+│  ├─ main/webapp/
+│  │  ├─ index.html
+│  │  ├─ login.html                     # wired to /api/login (v1.1)
+│  │  ├─ assets/css/styles.css
+│  │  ├─ assets/js/app.js
+│  │  └─ WEB-INF/web.xml
+│  └─ main/resources/                   # (if used)
+├─ docs/
+│  └─ sql/ (schema files)
+├─ pom.xml
+└─ README.md 
 ---
 
-## 6. Milestone 1 Features (v1.0)
+## 6. Milestones
+✅ Milestone 1 (v1.0)
 
-### ✔ Functional  
-- Basic UI pages  
-- Health endpoint `/health`  
-- Displays:  
+Static UI pages (HTML/CSS/JS)
+Health endpoint (/health) shows App/DB status
+JDBC connection via DBConnection singleton
+Schema (users, guests, rooms, reservations)
+Git: public repo, multiple branches, tag v1.0
 
-App: OK
-DB: OK
+✅ Milestone 2 – Step 6 (v1.1): Login API
+Features
 
-### ✔ Backend  
-- Tomcat 9 deployment  
-- JDBC connection working  
-- Singleton DBConnection  
-- Basic MVC structure  
+POST /api/login with BCrypt verification
+UserDAO.findByUsername
+JSON & form support; UTF‑8 request/response
+JSON responses; HttpSession created on success
+/login.html wired to use the API
+DB URL params corrected in DBConnection (& used, not &amp;)
 
-### ✔ Database  
-- Schema for users, guests, rooms, reservations  
-- SQL provided in `/docs/sql/`
-
-### ✔ Git Requirements  
-- Public GitHub repository  
-- Multiple meaningful commits  
-- Branches:  
-- feature/database  
-- feature/backend  
-- feature/ui  
-- feature/testing  
-- Release tag: **v1.0**
-
+Endpoints
+POST /ovrs/api/login
 ---
 
 ## 7. How to Run the Project
@@ -141,8 +133,8 @@ docs/sql/schema_v1_0.sql
 4. Add artifact:  
 
 ovrs:war exploded
-5. Set context path: `/` or `/ovrs`.  
-6. Use **JDK 21** (or switch Tomcat runtime to **JDK 17** if needed).
+5. Set context path: `/ovrs`.  
+6. Use **JDK 21** .
 
 ### Step 3 — Run
 - Build → Build Artifacts → war exploded  
@@ -153,11 +145,10 @@ ovrs:war exploded
 |------|-----|
 | Home | http://localhost:8080/ |
 | Health | http://localhost:8080/health |
-
+| Login | http://localhost:8080/ovrs/login.html |
 Expected output:
-
-App: OK
-DB: OK
+| Health | {"status":"UP","db":true} |
+| Login | {"status":"success","userId":1,"username":"admin","role":"ADMIN"} |
 
 ---
 
@@ -178,17 +169,16 @@ For database connection handling.
 ## 9. Version Control (Task D Requirements)
 
 ### ✔ Branching Strategy
-- main  
-- feature/database  
-- feature/backend  
-- feature/ui  
-- feature/testing  
+main
+feature/database, feature/backend, feature/ui, feature/testing
+feature/milestone-2-login-api (merged)
 
 ### ✔ Commit Strategy
 Frequent atomic commits with meaningful messages (recommended 3–4 per week).
 
 ### ✔ Release Tags
-- **v1.0** — Milestone 1 complete
+v1.0 (Milestone 1)
+v0.2.0-login (Milestone 2 – Step 6) — Milestone 1 complete
 
 ### ✔ Repository Link  
 https://github.com/dlny2024/Ocen_View_Resort_Reservation_System
@@ -210,18 +200,6 @@ https://github.com/dlny2024/Ocen_View_Resort_Reservation_System
 
 ---
 
-## 11. Next Milestone (v1.1)
-
-Planned improvements:
-- Login & authentication  
-- Reservation management (CRUD)  
-- Room availability checks  
-- Reporting module  
-- DAO layer  
-- More UI pages  
-- More commits & branches  
-
----
 
 ## 12. Acknowledgements
 This project is submitted as part of:  
