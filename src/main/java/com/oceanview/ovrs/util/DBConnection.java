@@ -28,9 +28,11 @@ import java.sql.Statement;
 public final class DBConnection {
 
     // ----- Adjust these to match your local MySQL credentials -----
+
     private static final String DB_URL =
             "jdbc:mysql://localhost:3306/ocean_view_resort"
-                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+                    + "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8";
+
     private static final String DB_USER = "root";
     private static final String DB_PASS = ""; // XAMPP default is empty. Set if you created a password.
     // ---------------------------------------------------------------

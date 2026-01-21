@@ -8,17 +8,102 @@
 <body>
 <main>
   <h2>Login</h2>
-  <form id="loginForm" onsubmit="return false;">
-    <label>Username <input type="text" id="username" required></label>
-    <label>Password <input type="password" id="password" required></label>
-    <button type="submit">Login</button>
+
+  <form id="login-form">
+    <label>Username
+      <input id="username" name="username" type="text" />
+    </label>
+    <label>Password
+      <input id="password" name="password" type="password" />
+    </label>
+    <button id="login-btn" type="submit">Login</button>
   </form>
-  <p class="hint">v1.0: UI only. Backend auth will come in v1.1.</p>
+  <p id="login-msg" style="color:crimson;margin-top:10px;"></p>
+
 </main>
+
+
 <script>
-document.getElementById('loginForm').addEventListener('submit', () => {
-  alert('For v1.0 this is a static UI. Backend in v1.1.');
-});
+  (function () {
+    const form = document.getElementById('login-form') || document.querySelector('form');
+    const usernameEl = document.getElementById('username') || document.querySelector('input[name="username"]');
+    const passwordEl = document.getElementById('password') || document.querySelector('input[name="password"]');
+    const btn = document.getElementById('login-btn') || document.querySelector('button[type="submit"]');
+    const msg = document.getElementById('login-msg') || (function () {
+      const p = document.createElement('p');
+      p.id = 'login-msg';
+      p.style.color = 'crimson';
+      p.style.marginTop = '10px';
+      (form || document.body).appendChild(p);
+      return p;
+    })();
+
+    // Detect context path automatically (e.g., /ovrs or /Ocen_View_Resort_Reservation_System)
+    const contextPath = window.location.pathname.split('/')[1] ? ('/' + window.location.pathname.split('/')[1]) : '';
+    const LOGIN_URL = contextPath + '/api/login';
+
+    function setLoading(loading) {
+      if (btn) {
+        btn.disabled = loading;
+        btn.innerText = loading ? 'Logging in...' : 'Login';
+      }
+    }
+
+    async function login(e) {
+      if (e) e.preventDefault();
+      msg.textContent = '';
+
+      const username = (usernameEl && usernameEl.value || '').trim();
+      const password = (passwordEl && passwordEl.value || '').trim();
+
+      if (!username || !password) {
+        msg.textContent = 'Please enter both username and password.';
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const res = await fetch(LOGIN_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } catch (_) {
+          throw new Error('Invalid server response: ' + text);
+        }
+
+        if (!res.ok || data.status !== 'success') {
+          msg.textContent = (data && data.message) ? data.message : 'Login failed';
+          return;
+        }
+
+        // Save minimal session info (for now; we’ll add JWT/sessions later)
+        sessionStorage.setItem('ovrs_user', JSON.stringify({
+          id: data.userId,
+          username: data.username,
+          role: data.role
+        }));
+
+        // Redirect to dashboard/home (adjust path if you have a different page)
+        window.location.href = contextPath + '/index.html';
+      } catch (err) {
+        console.error(err);
+        msg.textContent = 'Network or server error. Please try again.';
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (form) {
+      form.addEventListener('submit', login);
+    } else if (btn) {
+      btn.addEventListener('click', login);
+    }
+  })();
 </script>
+
 </body>
 </html>
